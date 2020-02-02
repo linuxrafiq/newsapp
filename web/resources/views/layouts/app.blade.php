@@ -14,7 +14,7 @@
     <script type="text/javascript">
         let url_cats_fetch = "{{ route('cats.fetch') }}";
       </script>
-    <script src="{{ asset('js/dynamic_spinner.js') }}" defer></script>
+    <script src="{{ asset('js/dynamic_cats_spinner.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">

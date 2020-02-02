@@ -29,10 +29,12 @@ class CategoryController extends Controller
         return view('cats.cat')->with('cats', $data);
     }
     public function indexSub(Request $request){
-        $data = DB:: table('categories')
-        ->where('parent_id', $request->value)
-        ->get()->toArray();
-        return view('cats.sub')->with('cats', $data);
+        // $data = DB:: table('categories')
+        // ->where('parent_id', $request->value)
+        // ->get()->toArray();
+        // return view('cats.sub')->with('cats', $data);
+        $cats=Category::orderby('created_at','desc')->get();
+        return view('cats.sub')->with('cats', $cats);
     }
     /**
      * Show the form for creating a new resource.
@@ -178,12 +180,14 @@ class CategoryController extends Controller
     
     public function fetch(Request $request)
     {
+        Log::channel('stack')->info('data');
+
         $data = DB:: table('categories')
                 ->where('parent_id', $request->value)
                 ->get()->toArray();
-        //Log::channel('stack')->info('data'.$data->toString();
-       // echo '<pre>';
-        //dd($request->dependent);
+        //Log::channel('stack')->info('data'.$data->toString());
+        //echo '<pre>';
+        //dd($data);
         //exit;
         $output = '<option value="">Select '.ucfirst($request->dependent).'</option>';
         foreach($data as $row){

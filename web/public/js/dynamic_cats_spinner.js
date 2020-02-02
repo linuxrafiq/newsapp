@@ -9,6 +9,11 @@ $(document).ready(function(){
             var dependent = $(this).data('dependent');
             var _token =  $('meta[name="csrf-token"]').attr('content');
             console.log(_token); 
+            console.log(select); 
+            console.log(value); 
+            console.log(dependent); 
+
+
            $.ajax({
                 url:url_cats_fetch,
                 method:"POST",
@@ -16,7 +21,7 @@ $(document).ready(function(){
                 success:function(result)
                 {
                     //debugger;
-                    console.log("success in ajax"); 
+                    console.log("success in ajax:"+dependent); 
                     $('#'+dependent).html(result);
                 }
         
