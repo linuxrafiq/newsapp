@@ -101,15 +101,27 @@ class CategoryController extends Controller
             'name'=>'required',
         ]);
         if ($this-> storeCategory($request->input('name'), $request->cat)==1){
-            return redirect(route('cats.cat'))->with('success', 'Category created successfully.');
+            return response(" Category added successfully", 200);
         }else{
-            return redirect(route('cats.cat'))->with('error', 'Category already exists.');
+            return response("This name already exist", 403);
         }
 
     }
 
     public function storesubcat(Request $request){
-
+        //Log::channel('stack')->info('data'.$data->toString());
+        
+        if ($this-> storeCategory($request->input('title'), $request->cat)==1){
+           
+            $output = array("message"=>"Subcategory added successfully", "status" => "200");
+            echo json_encode($output);
+            //exit;
+           // return response(" Subcategory added successfully", 200, null);
+        }else{
+            $output = array("message"=>"This name already exist", "status" => "403");
+            echo json_encode($output);
+            //return response("This name already exist", 403, null);
+        }
     }
 
     public function storecontent(Request $request){
@@ -194,5 +206,9 @@ class CategoryController extends Controller
             $output.= '<option value="'.$row->id.'">'.$row->title.'</option>';
         }
         return response($output, 200);
+    }
+
+    function log($tag, $log){
+        Log::channel('stack')->info($tag.":".$log);
     }
 }

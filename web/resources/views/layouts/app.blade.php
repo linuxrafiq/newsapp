@@ -13,6 +13,11 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script type="text/javascript">
         let url_cats_fetch = "{{ route('cats.fetch') }}";
+        let url_app_post = "{{ route('cats.storeapp') }}";
+        let url_sub_cat_post = "{{ route('cats.storesubcat') }}";
+        let url_cat_post = "{{ route('cats.storecat') }}";
+        let url_content_post = "{{ route('storecontent') }}";
+
       </script>
     <script src="{{ asset('js/dynamic_cats_spinner.js') }}" defer></script>
 
