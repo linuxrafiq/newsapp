@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('content')
-    <h1>Create an app</h1>
-    {!!Form::open(['action'=>'CategoryController@store', 'method'=>'POST'])!!}
-        {{ Form::hidden('parent_id', '0') }}
-        <div class='form-group'>
-            {{Form::label('name', 'App name')}}
-            {{Form::text('name', '', ['class'=>'form-control', 'placeholder'=>'app name'])}}
+    <form>
+        <div class="from-group">
+            <label for="name-sub">App name:</label>
+            <input type="text" name="name-sub" id ="name-sub" class="form-control" placeholder="App name"><br>
         </div>
-        {{Form::submit('Submit', ['class'=>'btn btn-primary'])}}
-    {!!Form::close()!!}
+        <br>
+        <button type="button" onclick="WebApp.CategoryController.onClickAppSubmitButton()" class="btn btn-primary">Submit </button>
+    </form>
+    
 @endsection

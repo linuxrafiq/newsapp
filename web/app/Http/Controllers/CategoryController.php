@@ -84,26 +84,32 @@ class CategoryController extends Controller
         // }else{
         //     return redirect(route('cats.app'))->with('error', 'App already exists.');
         // }
-        if($this->storeCategory($request->input('name'), $request->input('parent_id'))==1){
-            return redirect(route('cats.app'))->with('success', 'App created successfully.');
-        }else{
-             return redirect(route('cats.app'))->with('error', 'App already exists.');
-    }
+    //     if($this->storeCategory($request->input('name'), $request->input('parent_id'))==1){
+    //         return redirect(route('cats.app'))->with('success', 'App created successfully.');
+    //     }else{
+    //          return redirect(route('cats.app'))->with('error', 'App already exists.');
+    // }
         
     }
 
-    public function storecat(Request $request){
-        Log::channel('stack')->info('name'.$request->cat);
-        if($request->input('cat')==null){ // retriving option value by the name attribute of select tag
-            return redirect(route('cats.cat'))->with('error', 'Select an app');
-        }
-        $this->validate($request,[
-            'name'=>'required',
-        ]);
-        if ($this-> storeCategory($request->input('name'), $request->cat)==1){
-            return response(" Category added successfully", 200);
+    public function storeapp(Request $request){
+        if ($this-> storeCategory($request->input('title'), $request->parent_id)==1){
+            $output = array("message"=>"App added successfully", "status" => "200");
+            echo json_encode($output);
         }else{
-            return response("This name already exist", 403);
+            $output = array("message"=>"This name already exist", "status" => "403");
+            echo json_encode($output);
+        }
+
+    }
+
+    public function storecat(Request $request){
+        if ($this-> storeCategory($request->input('title'), $request->appcat)==1){
+            $output = array("message"=>"Category added successfully", "status" => "200");
+            echo json_encode($output);
+        }else{
+            $output = array("message"=>"This name already exist", "status" => "403");
+            echo json_encode($output);
         }
 
     }
