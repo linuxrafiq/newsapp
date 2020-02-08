@@ -46,7 +46,27 @@
               <a class="dropdown-item" href="{{route('cats.cat')}}">Create Category</a> 
               <a class="dropdown-item" href="{{route('cats.sub')}}">Create Sub Category</a> 
             </div>
-        </li>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                List <span class="caret"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{{route('cats.applist')}}">App List</a> 
+              <a class="dropdown-item" href="{{route('cats.catlist')}}">Category List</a> 
+              <a class="dropdown-item" href="{{route('cats.subcatlist')}}">Sub Category List</a> 
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                Content <span class="caret"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{{route('contents.index')}}">Add content</a> 
+              <a class="dropdown-item" href="{{route('content.show')}}">Contents</a> 
+            </div>
+          </li>
           {{-- <ul class="navbar-nav mr-auto">
             <li class="nav-item">
               <a class="nav-link" href="{{route('cats.create')}}">Create Cat <span class="sr-only">(current)</span></a>

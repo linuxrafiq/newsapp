@@ -18,7 +18,7 @@
      <br />
      <div class="form-group">
       <label for="category">Select a category</label>
-      <select name="category" id="category" class="form-control input-lg dynamic">
+      <select name="category" id="category" class="form-control input-lg">
        <option value="">Select Category</option>
       </select>
      </div>

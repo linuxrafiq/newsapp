@@ -23,10 +23,7 @@ class CategoryController extends Controller
         return view('cats.app');
     }
     public function indexCat(Request $request){
-        $data = DB:: table('categories')
-        ->where('parent_id', '0')
-        ->get()->toArray();
-        return view('cats.cat')->with('cats', $data);
+        return view('cats.cat')->with('cats', $this->getCats('0'));
     }
     public function indexSub(Request $request){
         // $data = DB:: table('categories')
@@ -167,9 +164,9 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
-        //
+        return "edit".$id;
     }
 
     /**
@@ -181,7 +178,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        return "update";
     }
 
     /**
@@ -190,9 +187,9 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+        return "deleted".$id;
     }
 
     
@@ -207,13 +204,34 @@ class CategoryController extends Controller
         //echo '<pre>';
         //dd($data);
         //exit;
-        $output = '<option value="">Select '.ucfirst($request->dependent).'</option>';
-        foreach($data as $row){
-            $output.= '<option value="'.$row->id.'">'.$row->title.'</option>';
-        }
-        return response($output, 200);
+        // $output = '<option value="">Select '.ucfirst($request->dependent).'</option>';
+        // foreach($data as $row){
+        //     $output.= '<option value="'.$row->id.'">'.$row->title.'</option>';
+        // }
+        return response(json_encode($data), 200);
     }
 
+    public function applist(Request $request){
+        return view('cats.list.applist')->with('cats', $this->getCats("0"));
+    }
+    public function catlist(Request $request){
+        
+        return view('cats.list.catlist')->with('cats', 
+        $this->getCats("0")); // loading catlist view with app list
+    }
+    public function subcatlist(Request $request){
+        return view('cats.list.subcatlist')->with('cats', 
+        $this->getCats("0")); // loading subcatlist view with applist
+    }
+
+    function getCats($parent_id){
+        $cats = DB:: table('categories')
+        ->where('parent_id', $parent_id)
+        ->orderby('created_at','desc')
+        ->get()->toArray();
+        return $cats;
+    }
+   
     function log($tag, $log){
         Log::channel('stack')->info($tag.":".$log);
     }

@@ -17,9 +17,10 @@
         let url_sub_cat_post = "{{ route('cats.storesubcat') }}";
         let url_cat_post = "{{ route('cats.storecat') }}";
         let url_content_post = "{{ route('storecontent') }}";
-
+        let url_cat_edit = "{{ route('cats.edit', ':id') }}";
+        let url_cat_destory = "{{ route('cats.destroy', ':id') }}";
       </script>
-    <script src="{{ asset('js/dynamic_cats_spinner.js') }}" defer></script>
+    <script src="{{ asset('js/cats.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">

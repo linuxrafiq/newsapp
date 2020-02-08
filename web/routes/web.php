@@ -21,14 +21,24 @@ Route::get('/cat', 'CategoryController@indexCat')->name('cats.cat');
 Route::get('/sub', 'CategoryController@indexSub')->name('cats.sub');
 
 Route::post('/storeapp', 'CategoryController@storeapp')->name('cats.storeapp');
-
 Route::post('/storecat', 'CategoryController@storecat')->name('cats.storecat');
 Route::post('/storesubcat', 'CategoryController@storesubcat')->name('cats.storesubcat');
+
+Route::get('/applist', 'CategoryController@applist')->name('cats.applist');
+Route::get('/catlist', 'CategoryController@catlist')->name('cats.catlist');
+Route::get('/subcatlist', 'CategoryController@subcatlist')->name('cats.subcatlist');
+
+//Route::post('/edit', 'CategoryController@edit')->name('cats.edit');
+//Route::DELETE('/destory', 'CategoryController@destroy')->name('cats.destroy');
+Route::get('/content/list', 'CategoryController@show')->name('content.show');
+
+
 Route::post('/storecontent', 'CategoryController@storecontent')->name('storecontent');
 
 Auth::routes();
 Route::post('/fetch', 'CategoryController@fetch')->name('cats.fetch');
 Route::resource('cats', 'CategoryController');
+Route::resource('contents', 'ContentController');
 Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();

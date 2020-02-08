@@ -6,7 +6,7 @@
   <p class="alert {{ Session::get('alert-class', 'alert-danger') }}">{{ Session::get('alert-danger') }}</p>
   @endif
    <div class="messages"></div>
-  </div>
+</div>
 
 @if(count($errors)>0)
     @foreach ($errors->all() as $error)
