@@ -132,19 +132,24 @@ class CategoryController extends Controller
     }
 
     function storeCategory($catname, $parent_id){
-        $catExist = DB:: table('categories')
-        ->where('title',$catname)
-        ->get()->first();
-        if ($catExist === null) {
-            $cat = new Category();
-            $cat->title = $catname;
-            $cat->parent_id = $parent_id;
-            $cat->user_id=auth()->user()->id;
-            $cat->save();
-            return 1;
-        }else{
+        try{
+            $catExist = DB:: table('categories')
+            ->where('title',$catname)
+            ->get()->first();
+            if ($catExist === null) {
+                $cat = new Category();
+                $cat->title = $catname;
+                $cat->parent_id = $parent_id;
+                $cat->user_id=auth()->user()->id;
+                $cat->save();
+                return 1;
+            }else{
+                return 0;
+            }
+        }catch(Exception $e){
             return 0;
         }
+        
     }
 
     /**

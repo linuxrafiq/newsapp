@@ -34,7 +34,9 @@ Route::get('/content/list', 'CategoryController@show')->name('content.show');
 
 
 Route::post('/storecontent', 'CategoryController@storecontent')->name('storecontent');
+Route::post('/contenttype', 'ContentController@type')->name('content.type');
 
+Route::post('ckeditor/image_upload', 'CKEditorController@upload')->name('upload');
 Auth::routes();
 Route::post('/fetch', 'CategoryController@fetch')->name('cats.fetch');
 Route::resource('cats', 'CategoryController');
