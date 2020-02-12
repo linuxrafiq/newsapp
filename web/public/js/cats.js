@@ -1,24 +1,28 @@
 var WebApp = WebApp || {};
 WebApp.CategoryController = WebApp.CategoryController || {};
 
-WebApp.CategoryController.onClickAppSubmitButton = function (){
-    //var select = $app.attr("id");
-   
-    var title = document.getElementById("name-sub").value;
+WebApp.CategoryController.onClickAppSubmitButton = function (){   
+    var title = document.getElementById("title_id").value;
     var messageView = $('.messages');
     var messageHtml = "";
-    var parent_id = 0;
     if (title == null || title == "") {
         messageHtml += WebApp.CategoryController.getAlertMessage("alert-danger", "Title should not empty");
         $(messageView).html(messageHtml);
         return;
     }
 
-    var _token = $('meta[name="csrf-token"]').attr('content');
+    var form = $("#form_id")[0];
+    var formData = new FormData(form);
+    formData.append('parent','0');
     $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
         url: url_app_post,
         method: "POST",
-        data: { title: title, parent_id: parent_id, _token: _token },
+        contentType: false,
+        processData: false,
+        data: formData,
         success: function (result) {
             var data_array = $.parseJSON(result);
             if (data_array.status == "200") {
@@ -40,12 +44,12 @@ WebApp.CategoryController.onClickAppSubmitButton = function (){
 }
 WebApp.CategoryController.onClickCategorySubmitButton = function (){
     //var select = $app.attr("id");
-    var appCat = document.getElementById("cat");
-    var valueAppCat = appCat.options[appCat.selectedIndex].value;
-    var title = document.getElementById("name-sub").value;
+    var parent = document.getElementById("parent_id");
+    var parent_id = parent.options[parent.selectedIndex].value;
+    var title = document.getElementById("title_id").value;
     var messageView = $('.messages');
     var messageHtml = "";
-    if (valueAppCat == null || valueAppCat == "") {
+    if (parent_id == null || parent_id == "") {
         messageHtml += WebApp.CategoryController.getAlertMessage("alert-danger", "Select an app");
     }
     if (title == null || title == "") {
@@ -56,12 +60,18 @@ WebApp.CategoryController.onClickCategorySubmitButton = function (){
         $(messageView).html(messageHtml);
         return;
     }
+    var form = $("#form_id")[0];
+    var formData = new FormData(form);
 
-    var _token = $('meta[name="csrf-token"]').attr('content');
     $.ajax({
+         headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
         url: url_cat_post,
         method: "POST",
-        data: { title: title, appcat: valueAppCat, _token: _token },
+        contentType: false,
+        processData: false,
+        data: formData,
         success: function (result) {
             var data_array = $.parseJSON(result);
             if (data_array.status == "200") {
@@ -82,13 +92,12 @@ WebApp.CategoryController.onClickCategorySubmitButton = function (){
     })
 }
 WebApp.CategoryController.onClickSubcategorySubmitButton = function () {
-    var app = document.getElementById("app");
-    //var select = $app.attr("id");
+
     var appCat = document.getElementById("app-cat");
     var valueAppCat = appCat.options[appCat.selectedIndex].value;
-    var category = document.getElementById("category");
-    var valueCat = category.options[category.selectedIndex].value;
-    var title = document.getElementById("name-sub").value;
+    var parent = document.getElementById("parent");
+    var valueCat = parent.options[parent.selectedIndex].value;
+    var title = document.getElementById("title_id").value;
     var messageView = $('.messages');
     var messageHtml = "";
     if (valueAppCat == null || valueAppCat == "") {
@@ -106,12 +115,19 @@ WebApp.CategoryController.onClickSubcategorySubmitButton = function () {
         return;
     }
 
-    var _token = $('meta[name="csrf-token"]').attr('content');
+    var form = $("#form_id")[0];
+    var formData = new FormData(form);
+
     $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
         url: url_sub_cat_post,
         method: "POST",
-        data: { title: title, appcat: valueAppCat, _token: _token, cat: valueCat },
-        success: function (result) {
+        contentType: false,
+        processData: false,
+        data: formData,
+         success: function (result) {
             console.log(result);
 
             var data_array = $.parseJSON(result);
@@ -165,6 +181,7 @@ WebApp.CategoryController.onSpinnerChangeListner = function () {
                             url_edit = url_edit.replace(':id', data_array[i].id);
                             url_destroy = url_destroy.replace(':id', data_array[i].id);
                             output+="<tr>"+
+                            "<td><img width='50' height='50' src='/storage/cover_images/"+data_array[i].cover_image+"'></td>"+
                             "<td>"+data_array[i].title+"</td>"+
                             "<td><a href="+url_edit+" class='btn btn-default'>Edit</a></td>"+
                             "<td>"+

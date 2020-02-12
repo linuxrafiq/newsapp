@@ -21,6 +21,7 @@
                             </tr>
                             @foreach ($cats as $cat)
                             <tr>
+                                <td><img width="50" height="50" src="/storage/cover_images/{{$cat->cover_image}}"></td>
                                 <td>{{$cat->title}}</td>
                                 <td><a href='{{route('cats.edit', $cat->id)}}' class="btn btn-default">Edit</a></td>
                                 <td>

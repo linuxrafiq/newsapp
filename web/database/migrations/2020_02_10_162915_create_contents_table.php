@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateContentsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('contents', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->integer('app_id');
+            $table->integer('cat_id');
+            $table->integer('sub_cat_id');
+            $table->integer('content_type');
+            $table->text('content');
+            $table->text('title');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('contents');
+    }
+}

@@ -9,6 +9,7 @@ use DB;
 use Illuminate\Support\Facades\Log;
 class ContentController extends Controller
 {
+   
     /**
      * Display a listing of the resource.
      *
@@ -78,7 +79,10 @@ class ContentController extends Controller
         // $this->log("content", $request->content);
         try {
             $content = new Content();
+            $content->app_id=$request->cat;
             $content->cat_id=$request->cat;
+            $content->sub_cat_id=$request->cat;
+            $content->title=$content->title;
             $content->content_type=$request->type;
             $content->content=$request->content;
             $content->save();

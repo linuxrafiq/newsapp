@@ -13,8 +13,12 @@ WebApp.ContentController.onClickContentSubmitButton = function () {
     var valueType = type.options[type.selectedIndex].value;
     var contentIsReady = false;
     var content = null;
+    var title = "";
     if(document.getElementById("editor")!==null){
         content = document.getElementById("editor").value;
+    }
+    if(document.getElementById("title")!==null){
+        title = document.getElementById("title").value;
     }
     var messageView = $('.messages');
     var messageHtml = "";
@@ -46,7 +50,7 @@ WebApp.ContentController.onClickContentSubmitButton = function () {
     $.ajax({
         url: url_content_store,
         method: "POST",
-        data: { content: content, _token: _token, cat: valueSubCat, type:valueType },
+        data: { title:title, content: content, _token: _token,app:valueAppCat,subcat: valueSubCat, cat: valueCat, type:valueType },
         success: function (result) {
             console.log(result);
 

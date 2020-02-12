@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use DB;
 use phpDocumentor\Reflection\Types\Object_;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 class CategoryController extends Controller
 {
     /**
@@ -90,64 +91,63 @@ class CategoryController extends Controller
     }
 
     public function storeapp(Request $request){
-        if ($this-> storeCategory($request->input('title'), $request->parent_id)==1){
-            $output = array("message"=>"App added successfully", "status" => "200");
-            echo json_encode($output);
-        }else{
-            $output = array("message"=>"This name already exist", "status" => "403");
-            echo json_encode($output);
+        if($this->checkforExist($request)  !== null){
+            $output = array("message"=>"This app name already exist", "status" => "403");
+            return json_encode($output);
         }
+        echo $this->storeCategory($request, "App");
 
     }
 
     public function storecat(Request $request){
-        if ($this-> storeCategory($request->input('title'), $request->appcat)==1){
-            $output = array("message"=>"Category added successfully", "status" => "200");
-            echo json_encode($output);
-        }else{
-            $output = array("message"=>"This name already exist", "status" => "403");
-            echo json_encode($output);
+        //return json_encode($request->hasFile('cover_image'));
+        if($this->checkforExist($request)  !== null){
+            $output = array("message"=>"This category name already exist", "status" => "403");
+            return json_encode($output);
         }
+        echo $this->storeCategory($request, "Category");
 
     }
 
     public function storesubcat(Request $request){
         //Log::channel('stack')->info('data'.$data->toString());
-        
-        if ($this-> storeCategory($request->input('title'), $request->cat)==1){
-           
-            $output = array("message"=>"Subcategory added successfully", "status" => "200");
-            echo json_encode($output);
-            //exit;
-           // return response(" Subcategory added successfully", 200, null);
-        }else{
-            $output = array("message"=>"This name already exist", "status" => "403");
-            echo json_encode($output);
-            //return response("This name already exist", 403, null);
+        if($this->checkforExist($request)  !== null){
+            $output = array("message"=>"This subcategory name already exist", "status" => "403");
+            return json_encode($output);
         }
+        echo $this->storeCategory($request, "Subcategory");
     }
 
     public function storecontent(Request $request){
 
     }
 
-    function storeCategory($catname, $parent_id){
-        try{
-            $catExist = DB:: table('categories')
-            ->where('title',$catname)
+    function checkforExist(Request $request){
+            return DB:: table('categories')
+            ->where('title',$request->title)
             ->get()->first();
-            if ($catExist === null) {
-                $cat = new Category();
-                $cat->title = $catname;
-                $cat->parent_id = $parent_id;
-                $cat->user_id=auth()->user()->id;
-                $cat->save();
-                return 1;
-            }else{
-                return 0;
+    }
+    function storeCategory(Request $request, $type){
+        try{
+            $fileNameToStore='no_image.jpg';
+            if($request->hasFile('cover_image')){
+                $fileNameWithExt = $request->file('cover_image')->getClientOriginalName();
+                $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+                $extension = $request->file('cover_image')->getClientOriginalExtension();
+                $fileNameToStore=$fileName.'_'.time().'.'.$extension;
+                $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
+
             }
+            $cat = new Category();
+            $cat->title = $request->title;
+            $cat->parent_id = $request->parent;
+            $cat->cover_image=$fileNameToStore;
+            $cat->user_id=auth()->user()->id;
+            $cat->save();
+            return json_encode(array("message"=>"This ".$type." successfully added", "status" => "200"));
+              
         }catch(Exception $e){
-            return 0;
+            return  json_encode(array("message"=>$type." failed to insert: ".$e->getMessage(), "status" => "403"));
         }
         
     }

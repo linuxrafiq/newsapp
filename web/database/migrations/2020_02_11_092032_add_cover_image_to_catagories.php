@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateContentsTable extends Migration
+class AddCoverImageToCatagories extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateContentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('contents', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer('cat_id');
-            $table->integer('content_type');
-            $table->text('content');
-            $table->timestamps();
+        Schema::table('categories', function (Blueprint $table) {
+            $table->string('cover_image')->nullable();
         });
     }
 
@@ -29,6 +25,8 @@ class CreateContentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contents');
+        Schema::table('categories', function (Blueprint $table) {
+            $table->dropColumn('cover_image');
+        });
     }
 }
