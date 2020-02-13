@@ -128,9 +128,13 @@ class CategoryController extends Controller
             ->get()->first();
     }
     function storeCategory(Request $request, $type){
+        //return json_encode(getimagesize($request->cover_image));
         try{
             $fileNameToStore='no_image.jpg';
             if($request->hasFile('cover_image')){
+                $this->validate($request,[
+                    'cover_image'=>'image|nullable|max:1999'
+                ]);
                 $fileNameWithExt = $request->file('cover_image')->getClientOriginalName();
                 $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
                 $extension = $request->file('cover_image')->getClientOriginalExtension();

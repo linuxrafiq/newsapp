@@ -1,8 +1,6 @@
 
 @extends('layouts.app')
 @push('head')
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-
 <!-- Initialize Quill editor -->
 <script>
  var quill = new Quill('#editor', {
@@ -11,9 +9,9 @@
 </script>
     @endpush
 @section('content')
-    <form id="input-form">
+<form id="form_id" enctype="multipart/form-data">
     <div class="form-group">
-      <select name="app-cat" id="app-cat" class="form-control input-lg dynamic" data-dependent="category" >
+      <select name="app_cat" id="app-cat" class="form-control input-lg dynamic" data-dependent="category" >
        <option value="">Select App</option>
        @foreach ($cats as $cat)
             <option value="{{ $cat->id}}">{{ $cat->title }}</option>
@@ -39,12 +37,20 @@
              <option value="4">PDF</option>
              <option value="5">Image</option>
             </select>
-           </div>
-
+        </div>
+        <div class="from-group">
+          <label for="title">Content title(optional):</label>
+          <input type="text" name="title" id ="title_id" class="form-control" placeholder="Category name"/><br>
+      </div>
+      <div class="form-group">
+        <label for="image" >Upload an image (optional)</label>
+        <input type="file" id="image" name="cover_image" autocomplete="off" class="form-control"/>
+      </div>
         <div class="row" id="view-area" name="view-area">
           <!--this part will change-->
         </div>
         <br>
+        
         <button type="button" onclick="WebApp.ContentController.onClickContentSubmitButton()" class="btn btn-primary">Submit </button>
     </form>
     

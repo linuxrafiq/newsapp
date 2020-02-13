@@ -16,6 +16,7 @@
             <input type="text" name="title" id ="title_id" class="form-control" placeholder="Category name"/><br>
         </div>
         <div class="form-group">
+            <label for="image">Upload an image (optional)</label>
             <input type="file" id="image" name="cover_image" autocomplete="off" class="form-control" />
         </div>
         <br>

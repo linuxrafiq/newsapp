@@ -46,14 +46,32 @@ WebApp.ContentController.onClickContentSubmitButton = function () {
         return;
     }
 
-    var _token = $('meta[name="csrf-token"]').attr('content');
+    var form = $("#form_id")[0];
+    var formData = new FormData(form);
+
     $.ajax({
+         headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
         url: url_content_store,
         method: "POST",
-        data: { title:title, content: content, _token: _token,app:valueAppCat,subcat: valueSubCat, cat: valueCat, type:valueType },
+        contentType: false,
+        processData: false,
+        data: formData,
+        xhr: function() {
+            var xhr = new window.XMLHttpRequest();
+            xhr.upload.addEventListener("progress", function(evt) {
+                if (evt.lengthComputable) {
+                    var percentComplete = evt.loaded / evt.total;
+                    console.log(percentComplete);
+                    $('#status').html('Upload a file (compulsory):<b> Uploading -> ' + (Math.round(percentComplete * 100)) + '% </b>');
+                }
+            }, false);
+            return xhr;
+        },
         success: function (result) {
             console.log(result);
-
+            
             var data_array = $.parseJSON(result);
             console.log(data_array);
             if (data_array.status == "200") {

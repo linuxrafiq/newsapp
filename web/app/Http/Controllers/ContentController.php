@@ -6,6 +6,9 @@ use App\Content;
 use App\Category;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 class ContentController extends Controller
 {
@@ -77,14 +80,52 @@ class ContentController extends Controller
         // $this->log("cat id", $request->cat);
         // $this->log("type", $request->type);
         // $this->log("content", $request->content);
+       
         try {
+            $anyFileNameToStore='';
+            if($request->type==3||$request->type==4||$request->type==5){
+                //return json_encode($request->hasFile('any_file'));
+                if($request->hasFile('any_file')){
+                    // $this->validate($request,[
+                    //     'any_file'=>'max:10000'
+                    // ]);
+                    $fileNameWithExt = $request->file('any_file')->getClientOriginalName();
+                    $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+                    $extension = $request->file('any_file')->getClientOriginalExtension();
+                    $anyFileNameToStore=$fileName.'_'.time().'.'.$extension;
+                    //Storage::putFileAs('any_file', new File('public/files'), $anyFileNameToStore);
+                    $path = $request->file('any_file')->storeAs('public/files', $anyFileNameToStore);
+    
+                }else{
+                    $output = array("message"=>"Please upload a file  ", "status" => "403");
+                    return json_encode($output);
+                }
+            }
+            $fileNameToStore='no_image.jpg';
+            if($request->hasFile('cover_image')){
+                $this->validate($request,[
+                    'cover_image'=>'image|nullable|max:1999'
+                ]);
+                $fileNameWithExt = $request->file('cover_image')->getClientOriginalName();
+                $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+                $extension = $request->file('cover_image')->getClientOriginalExtension();
+                $fileNameToStore=$fileName.'_'.time().'.'.$extension;
+                $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
+
+            }
+           
             $content = new Content();
-            $content->app_id=$request->cat;
-            $content->cat_id=$request->cat;
-            $content->sub_cat_id=$request->cat;
-            $content->title=$content->title;
+            $content->app_id=$request->app_cat;
+            $content->cat_id=$request->category;
+            $content->sub_cat_id=$request->subcategory;
+            $content->title=$request->title;
             $content->content_type=$request->type;
-            $content->content=$request->content;
+            if($request->type==3||$request->type==4||$request->type==5){
+                $content->content=$anyFileNameToStore;
+            }else{
+                $content->content=$request->content;
+            }
+            $content->cover_image=$fileNameToStore;
             $content->save();
             $output = array("message"=>"Content added successfully", "status" => "200");
             echo json_encode($output);
