@@ -27,6 +27,7 @@ Route::post('/storesubcat', 'CategoryController@storesubcat')->name('cats.stores
 Route::get('/applist', 'CategoryController@applist')->name('cats.applist');
 Route::get('/catlist', 'CategoryController@catlist')->name('cats.catlist');
 Route::get('/subcatlist', 'CategoryController@subcatlist')->name('cats.subcatlist');
+Route::get('/contentlist/{id}', 'CategoryController@contents')->name('cats.contentlist');
 
 //Route::post('/edit', 'CategoryController@edit')->name('cats.edit');
 //Route::DELETE('/destory', 'CategoryController@destroy')->name('cats.destroy');
@@ -35,6 +36,8 @@ Route::get('/content/list', 'CategoryController@show')->name('content.show');
 
 Route::post('/storecontent', 'CategoryController@storecontent')->name('storecontent');
 Route::post('/contenttype', 'ContentController@type')->name('content.type');
+Route::get('/content/list', 'ContentController@contentsAll')->name('content.list');
+
 
 Route::post('ckeditor/image_upload', 'CKEditorController@upload')->name('upload');
 Auth::routes();

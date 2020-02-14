@@ -64,7 +64,7 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="{{route('contents.index')}}">Add content</a> 
-              <a class="dropdown-item" href="{{route('content.show')}}">Contents</a> 
+              <a class="dropdown-item" href="{{route('content.list')}}">Contents</a> 
             </div>
           </li>
           {{-- <ul class="navbar-nav mr-auto">

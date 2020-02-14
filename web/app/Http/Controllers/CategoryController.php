@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Controllers\ContentController;
 use Illuminate\Http\Request;
 use DB;
 use phpDocumentor\Reflection\Types\Object_;
@@ -23,9 +24,11 @@ class CategoryController extends Controller
     public function indexApp(){
         return view('cats.app');
     }
+
     public function indexCat(Request $request){
         return view('cats.cat')->with('cats', $this->getCats('0'));
     }
+
     public function indexSub(Request $request){
         // $data = DB:: table('categories')
         // ->where('parent_id', $request->value)
@@ -140,7 +143,6 @@ class CategoryController extends Controller
                 $extension = $request->file('cover_image')->getClientOriginalExtension();
                 $fileNameToStore=$fileName.'_'.time().'.'.$extension;
                 $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
-
             }
             $cat = new Category();
             $cat->title = $request->title;
@@ -241,6 +243,22 @@ class CategoryController extends Controller
         return $cats;
     }
    
+    public function contents($id){
+        //return "from catgory contorller content function".$id;
+        // return DB:: table('contents')
+        // ->where('sub_cat_id', $id)
+        // ->orderby('created_at','desc')
+        // ->get()->toArray();
+
+        //  $cat = Category::find($id);
+        //  $contents = $cat->contents();
+        //  return json_encode($contents);
+
+        $content = new ContentController();
+        
+        return view('contents.list')->with('contents', $content->contentlist($id));
+
+    } 
     function log($tag, $log){
         Log::channel('stack')->info($tag.":".$log);
     }

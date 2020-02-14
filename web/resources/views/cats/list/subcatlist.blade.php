@@ -24,7 +24,7 @@
                       </select>
                      </div>
                      <div class="form-group">
-                      <select name="category" id="category" class="form-control input-lg dynamic-app-cats" data-dependent="categories">
+                      <select name="category" id="category" class="form-control input-lg dynamic-app-cats" data-dependent="subcategories">
                        <option value="">Select Category</option>
                       </select>
                      </div>
@@ -38,7 +38,7 @@
                     @endif
                     <h3>Subcatagory list</h3>
                     @if (count($cats)>0)
-                        <table id="categories" name="categories" class="table table-striped">
+                        <table id="subcategories" name="subcategories" class="table table-striped">
                             
                         </table>
                         @else

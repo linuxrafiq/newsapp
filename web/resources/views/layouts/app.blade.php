@@ -26,8 +26,7 @@
         let url_cat_destory = "{{ route('cats.destroy', ':id') }}";
         let url_content_type = "{{ route('content.type') }}";
         let url_content_store = "{{ route('contents.store') }}";
-
-
+        let url_cat_contents = "{{ route('cats.contentlist', ':id') }}";
       </script>
     <script src="{{ asset('js/cats.js') }}" defer></script>
     <script src="{{ asset('js/content.js') }}" defer></script>

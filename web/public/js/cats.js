@@ -168,6 +168,7 @@ WebApp.CategoryController.onSpinnerChangeListner = function () {
                     //debugger;
                     //"<td><a href='{{route('cats.edit', "+data_array[i].id+")}}' class='btn btn-default'>Edit</a></td>"+
                     var output ="";
+                    
                     var data_array = $.parseJSON(result);
                     if(data_array.length>0){
                         output+="<tr>"+
@@ -180,10 +181,17 @@ WebApp.CategoryController.onSpinnerChangeListner = function () {
                             let url_destroy = url_cat_destory;
                             url_edit = url_edit.replace(':id', data_array[i].id);
                             url_destroy = url_destroy.replace(':id', data_array[i].id);
+                            var contentsButton="";
+                            if (dependent=="subcategories"){
+                                let url_cat_con = url_cat_contents
+                                url_cat_con = url_cat_con.replace(':id', data_array[i].id);
+                                contentsButton="<td><a href="+url_cat_con+" class='btn btn-primary'>Contents</a></td>";
+                            }
                             output+="<tr>"+
                             "<td><img width='50' height='50' src='/storage/cover_images/"+data_array[i].cover_image+"'></td>"+
                             "<td>"+data_array[i].title+"</td>"+
-                            "<td><a href="+url_edit+" class='btn btn-default'>Edit</a></td>"+
+                            contentsButton+
+                            "<td><a href="+url_edit+" class='btn btn-primary'>Edit</a></td>"+
                             "<td>"+
                                 "<form method='POST' action='"+url_destroy+"'  class='pull-right' accept-charset='UTF-8'>"+
                                 "<input type='hidden' name='_method' value='DELETE'>"+

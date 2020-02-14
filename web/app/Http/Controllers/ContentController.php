@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use phpDocumentor\Reflection\Types\Object_;
 class ContentController extends Controller
 {
    
@@ -36,14 +37,9 @@ class ContentController extends Controller
         }else if($request->input('type')=='2'){
             $output = view('contents.views.htmlview')->render();
 
-        }else if($request->input('type')=='3'){
+        }else if($request->input('type')=='3'||$request->input('type')=='4'
+        ||$request->input('type')=='5'){
             $output = view('contents.views.fileupload')->render();
-
-        }else if($request->input('type')=='4'){
-            $output = view('contents.views.pdffile')->render();
-
-        }else if($request->input('type')=='5'){
-            $output = view('contents.views.imagefile')->render();
 
         }else {
             $output = view('contents.views.normaltext')->render();
@@ -57,7 +53,45 @@ class ContentController extends Controller
     public function show($id)
     {
         $content = Content::find($id);
+        return "abc";
         return view('contents.show')->with('content', $content);
+    }
+
+    public function contentsAll(){
+        $contents= $this->getContents(null);
+        return view('contents.list')->with('contents', $this->getContentList($contents));
+
+    }
+    public function contentlist($id){
+        $contents= $this->getContents($id);
+        return $this->getContentList($contents);
+    }
+
+    function getContentList($contents){
+        $listItems = array(); 
+        $length = count($contents);
+        //$listItems = new Object_();
+        for( $i=0; $i<$length; $i++){
+            $item = new Object_();
+            $content=$contents[$i];
+            $item->content=$content;
+            $item->app=Category::find($content->app_id);
+            $item->category=Category::find($content->cat_id);
+            $item->subcategory=Category::find($content->sub_cat_id);
+            array_push($listItems, $item);
+        }
+        return $listItems;
+    }
+
+    public function getContents($subCatId){
+        if ($subCatId==null){
+           return Content::orderby('created_at','desc')->get();
+        }else{
+            return DB:: table('contents')
+            ->where('sub_cat_id', $subCatId)
+            ->orderby('created_at','desc')
+            ->get()->toArray();
+        }
     }
     /**
      * Show the form for creating a new resource.
